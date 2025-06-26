@@ -10,6 +10,51 @@
   🤖 Sakura is a Laravel package that automatically generates comprehensive tests for your PHP classes and functions using OpenAI's GPT-4o-mini, Anthropic's Claude, Google's Gemini, or local Ollama models.
 </div>
 
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic Usage](#basic-usage)
+  - [Advanced Usage](#advanced-usage)
+- [AI Providers](#ai-providers)
+  - [OpenAI](#openai)
+  - [Claude](#claude)
+  - [Gemini](#gemini)
+  - [Ollama](#ollama)
+  - [Setting up Gemini](#setting-up-gemini)
+  - [Setting up Claude](#setting-up-claude)
+  - [Setting up Ollama](#setting-up-ollama)
+- [How It Works](#how-it-works)
+  - [1. Code Analysis](#1-code-analysis)
+  - [2. Change Detection](#2-change-detection)
+  - [3. Test Generation](#3-test-generation)
+  - [4. Test Organization](#4-test-organization)
+- [Configuration](#configuration)
+  - [AI Provider Settings](#ai-provider-settings)
+  - [OpenAI Settings](#openai-settings)
+  - [Claude Settings](#claude-settings)
+  - [Gemini Settings](#gemini-settings)
+  - [Ollama Settings](#ollama-settings)
+  - [Analysis Directories](#analysis-directories)
+  - [Testing Configuration](#testing-configuration)
+- [File Structure](#file-structure)
+- [Example Output](#example-output)
+- [Generated Test Examples](#generated-test-examples)
+  - [Pest Feature Test (Controller)](#pest-feature-test-controller)
+  - [PHPUnit Unit Test (Service)](#phpunit-unit-test-service)
+- [Provider Comparison](#provider-comparison)
+- [Troubleshooting](#troubleshooting)
+  - [OpenAI Issues](#openai-issues)
+  - [Claude Issues](#claude-issues)
+  - [Gemini Issues](#gemini-issues)
+  - [Ollama Issues](#ollama-issues)
+  - [General Issues](#general-issues)
+- [Requirements](#requirements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Support](#support)
+
 ## Features
 
 - **Smart Code Analysis**: Automatically detects and tracks changes in your PHP classes and functions
@@ -25,7 +70,7 @@
 1. **Install the package via Composer:**
 
 ```bash
-composer require Genericmilk/sakura
+composer require genericmilk/sakura
 ```
 
 2. **Publish the configuration file:**
