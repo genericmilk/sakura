@@ -115,6 +115,11 @@ class CodeAnalyzer
         File::put($this->codeTreeFile, json_encode($codeTree, JSON_PRETTY_PRINT));
     }
 
+    public function getCodeTree(): array
+    {
+        return $this->loadCodeTree();
+    }
+
     private function loadCodeTree(): array
     {
         if (!File::exists($this->codeTreeFile)) {

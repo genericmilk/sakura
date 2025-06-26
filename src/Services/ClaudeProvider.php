@@ -11,16 +11,40 @@ class ClaudeProvider implements AIProviderInterface
 
     public function __construct()
     {
-        $this->config = config('sakura.claude');
-        $this->client = new AnthropicAPI($this->config['api_key']);
+        // Remove config caching and client initialization from constructor
+    }
+
+    private function getConfig(): array
+    {
+        return config('sakura.claude') ?? [];
+    }
+
+    private function getClient(): ?AnthropicAPI
+    {
+        $config = $this->getConfig();
+        if (empty($config['api_key'])) {
+            return null;
+        }
+        
+        // Initialize client on demand
+        return new AnthropicAPI($config['api_key']);
     }
 
     public function generateTest(string $prompt): array
     {
+        $client = $this->getClient();
+        if (!$client) {
+            return [
+                'content' => null,
+                'error' => 'Claude API client not initialized. Please check your API key configuration.',
+            ];
+        }
+
         try {
-            $response = $this->client->messages()->create([
-                'model' => $this->config['model'],
-                'maxTokens' => $this->config['max_tokens'],
+            $config = $this->getConfig();
+            $response = $client->messages()->create([
+                'model' => $config['model'],
+                'maxTokens' => $config['max_tokens'],
                 'messages' => [
                     [
                         'role' => 'user',
@@ -55,7 +79,8 @@ Return only the test code, no explanations. Focus on creating high-quality, main
 
     public function isConfigured(): bool
     {
-        return !empty($this->config['api_key']);
+        $config = $this->getConfig();
+        return !empty($config['api_key']);
     }
 
     public function getName(): string
@@ -82,8 +107,13 @@ Return only the test code, no explanations. Focus on creating high-quality, main
      */
     public function isModelAvailable(): bool
     {
+        $config = $this->getConfig();
+        if (empty($config['model'])) {
+            return false;
+        }
+        
         $availableModels = $this->getAvailableModels();
-        return in_array($this->config['model'], $availableModels);
+        return in_array($config['model'], $availableModels);
     }
 
     /**
@@ -91,9 +121,15 @@ Return only the test code, no explanations. Focus on creating high-quality, main
      */
     public function testConnection(): bool
     {
+        $client = $this->getClient();
+        if (!$client) {
+            return false;
+        }
+
         try {
-            $response = $this->client->messages()->create([
-                'model' => $this->config['model'],
+            $config = $this->getConfig();
+            $response = $client->messages()->create([
+                'model' => $config['model'],
                 'maxTokens' => 10,
                 'messages' => [
                     [

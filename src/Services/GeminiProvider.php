@@ -11,14 +11,38 @@ class GeminiProvider implements AIProviderInterface
 
     public function __construct()
     {
-        $this->config = config('sakura.gemini');
-        $this->client = Gemini::client($this->config['api_key']);
+        // Remove config caching and client initialization from constructor
+    }
+
+    private function getConfig(): array
+    {
+        return config('sakura.gemini') ?? [];
+    }
+
+    private function getClient()
+    {
+        $config = $this->getConfig();
+        if (empty($config['api_key'])) {
+            return null;
+        }
+        
+        // Initialize client on demand
+        return Gemini::client($config['api_key']);
     }
 
     public function generateTest(string $prompt): array
     {
+        $client = $this->getClient();
+        if (!$client) {
+            return [
+                'content' => null,
+                'error' => 'Gemini API client not initialized. Please check your API key configuration.',
+            ];
+        }
+
         try {
-            $result = $this->client->generativeModel(model: $this->config['model'])->generateContent($this->buildPrompt($prompt));
+            $config = $this->getConfig();
+            $result = $client->generativeModel(model: $config['model'])->generateContent($this->buildPrompt($prompt));
             
             $content = $result->text();
 
@@ -46,7 +70,8 @@ Return only the test code, no explanations. Focus on creating high-quality, main
 
     public function isConfigured(): bool
     {
-        return !empty($this->config['api_key']);
+        $config = $this->getConfig();
+        return !empty($config['api_key']);
     }
 
     public function getName(): string
@@ -73,8 +98,13 @@ Return only the test code, no explanations. Focus on creating high-quality, main
      */
     public function isModelAvailable(): bool
     {
+        $config = $this->getConfig();
+        if (empty($config['model'])) {
+            return false;
+        }
+        
         $availableModels = $this->getAvailableModels();
-        return in_array($this->config['model'], $availableModels);
+        return in_array($config['model'], $availableModels);
     }
 
     /**
@@ -82,8 +112,14 @@ Return only the test code, no explanations. Focus on creating high-quality, main
      */
     public function testConnection(): bool
     {
+        $client = $this->getClient();
+        if (!$client) {
+            return false;
+        }
+
         try {
-            $result = $this->client->generativeModel(model: $this->config['model'])->generateContent('Hello, this is a test message.');
+            $config = $this->getConfig();
+            $result = $client->generativeModel(model: $config['model'])->generateContent('Hello, this is a test message.');
             return !empty($result->text());
         } catch (\Exception $e) {
             return false;
