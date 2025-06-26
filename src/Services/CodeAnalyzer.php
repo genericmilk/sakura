@@ -208,6 +208,8 @@ class CodeAnalyzer
                         if ($inClass && $currentClass && empty($currentClass['name'])) {
                             $currentClass['name'] = $text;
                             $currentClass['full_name'] = $namespace ? $namespace . '\\' . $text : $text;
+                        } elseif ($currentMethod && empty($currentMethod['name'])) {
+                            $currentMethod['name'] = $text;
                         }
                         break;
 
@@ -235,12 +237,6 @@ class CodeAnalyzer
                                     'hash' => '',
                                 ];
                             }
-                        }
-                        break;
-
-                    case T_STRING:
-                        if ($currentMethod && empty($currentMethod['name'])) {
-                            $currentMethod['name'] = $text;
                         }
                         break;
 
