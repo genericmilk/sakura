@@ -260,27 +260,29 @@ class CodeAnalyzer
                             }
                         }
                         break;
-
-                    case '}':
-                        if ($currentMethod) {
-                            $currentMethod['end_line'] = $line;
-                            $currentMethod['content'] = $this->extractMethodContent($content, $methodStartLine, $line);
-                            $currentMethod['hash'] = md5($currentMethod['content']);
-                            
-                            if ($currentClass) {
-                                $currentClass['methods'][] = $currentMethod;
-                            }
-                            $currentMethod = null;
-                        } elseif ($inClass && $currentClass) {
-                            $currentClass['end_line'] = $line;
-                            $currentClass['content'] = $this->extractClassContent($content, $classStartLine, $line);
-                            $currentClass['hash'] = md5($currentClass['content']);
-                            
-                            $classes[] = $currentClass;
-                            $currentClass = null;
-                            $inClass = false;
+                }
+            } else {
+                // Handle non-array tokens (like '{', '}', etc.)
+                if ($token === '}') {
+                    if ($currentMethod) {
+                        $currentMethod['end_line'] = isset($line) ? $line : 0;
+                        $currentMethod['content'] = $this->extractMethodContent($content, $methodStartLine, $currentMethod['end_line']);
+                        $currentMethod['hash'] = md5($currentMethod['content']);
+                        
+                        if ($currentClass) {
+                            $currentClass['methods'][] = $currentMethod;
                         }
-                        break;
+                        $currentMethod = null;
+                    } elseif ($inClass && $currentClass) {
+                        $currentClass['end_line'] = isset($line) ? $line : 0;
+                        $currentClass['content'] = $this->extractClassContent($content, $classStartLine, $currentClass['end_line']);
+                        $currentClass['hash'] = md5($currentClass['content']);
+                        
+                        $classes[] = $currentClass;
+                        $debugInfo['classes_detected'][] = "FINALIZED: " . $currentClass['name'];
+                        $currentClass = null;
+                        $inClass = false;
+                    }
                 }
             }
         }
