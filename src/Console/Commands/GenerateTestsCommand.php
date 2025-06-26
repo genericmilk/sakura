@@ -71,32 +71,7 @@ class GenerateTestsCommand extends Command
         
         if ($this->option('force')) {
             $this->info('🔄 Force mode enabled - analyzing all code...');
-            
-            // Debug: Show what directories we're looking at
-            $directories = config('sakura.analysis.directories');
-            $this->line('Debug: Configured directories: ' . implode(', ', $directories));
-            
-            $existingDirs = [];
-            $nonExistentDirs = [];
-            foreach ($directories as $dir) {
-                $fullPath = base_path($dir);
-                if (File::exists($fullPath)) {
-                    $existingDirs[] = $dir;
-                } else {
-                    $nonExistentDirs[] = $dir;
-                }
-            }
-            
-            if (!empty($existingDirs)) {
-                $this->line('Debug: Existing directories: ' . implode(', ', $existingDirs));
-            }
-            if (!empty($nonExistentDirs)) {
-                $this->line('Debug: Non-existent directories: ' . implode(', ', $nonExistentDirs));
-            }
-            
             $currentTree = $this->codeAnalyzer->analyzeCodebase();
-            $this->line('Debug: Analysis complete - found ' . count($currentTree['classes']) . ' classes and ' . count($currentTree['functions']) . ' functions');
-            
             $changedItems = [
                 'changed_classes' => $currentTree['classes'],
                 'changed_functions' => $currentTree['functions'],
