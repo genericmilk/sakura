@@ -179,10 +179,29 @@ class CodeAnalyzer
         $inClass = false;
         $classStartLine = 0;
         $methodStartLine = 0;
+        
+        // Debug: Track what we find in this file
+        $debugInfo = [
+            'file' => $filePath,
+            'tokens_found' => [],
+            'classes_detected' => [],
+            'methods_detected' => []
+        ];
 
         foreach ($tokens as $token) {
             if (is_array($token)) {
                 [$id, $text, $line] = $token;
+                
+                // Debug: Track key tokens
+                if (in_array($id, [T_NAMESPACE, T_CLASS, T_STRING, T_FUNCTION])) {
+                    $debugInfo['tokens_found'][] = [
+                        'type' => token_name($id),
+                        'text' => $text,
+                        'line' => $line,
+                        'inClass' => $inClass,
+                        'currentClass' => $currentClass ? $currentClass['name'] : null
+                    ];
+                }
 
                 switch ($id) {
                     case T_NAMESPACE:
@@ -208,8 +227,10 @@ class CodeAnalyzer
                         if ($inClass && $currentClass && empty($currentClass['name'])) {
                             $currentClass['name'] = $text;
                             $currentClass['full_name'] = $namespace ? $namespace . '\\' . $text : $text;
+                            $debugInfo['classes_detected'][] = $text;
                         } elseif ($currentMethod && empty($currentMethod['name'])) {
                             $currentMethod['name'] = $text;
+                            $debugInfo['methods_detected'][] = $text;
                         }
                         break;
 
@@ -262,6 +283,11 @@ class CodeAnalyzer
                         break;
                 }
             }
+        }
+        
+        // Debug: Save detailed info for a few files
+        if (in_array($filePath, ['User.php', 'Show.php', 'Controller.php'])) {
+            File::put(storage_path("sakura_debug_{$filePath}.json"), json_encode($debugInfo, JSON_PRETTY_PRINT));
         }
     }
 
