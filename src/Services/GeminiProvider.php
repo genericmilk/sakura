@@ -45,6 +45,9 @@ class GeminiProvider implements AIProviderInterface
             $result = $client->generativeModel(model: $config['model'])->generateContent($this->buildPrompt($prompt));
             
             $content = $result->text();
+            
+            // Strip markdown code blocks
+            $content = $this->stripMarkdownCodeBlocks($content);
 
             return [
                 'content' => $content,
@@ -124,5 +127,25 @@ Return only the test code, no explanations. Focus on creating high-quality, main
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Strip markdown code blocks from the response
+     */
+    private function stripMarkdownCodeBlocks(string $content): string
+    {
+        // Remove opening code blocks (```php, ```, etc.)
+        $content = preg_replace('/^```[a-zA-Z]*\n?/m', '', $content);
+        
+        // Remove closing code blocks
+        $content = preg_replace('/\n?```$/m', '', $content);
+        
+        // Clean up any remaining backticks at start/end
+        $content = trim($content, '`');
+        
+        // Clean up extra whitespace
+        $content = trim($content);
+        
+        return $content;
     }
 } 
