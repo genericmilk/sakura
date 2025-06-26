@@ -35,6 +35,9 @@ class OpenAIProvider implements AIProviderInterface
             ]);
 
             $content = $response->choices[0]->message->content;
+            
+            // Strip markdown code blocks
+            $content = $this->stripMarkdownCodeBlocks($content);
 
             return [
                 'content' => $content,
@@ -47,6 +50,26 @@ class OpenAIProvider implements AIProviderInterface
                 'error' => 'OpenAI API Error: ' . $e->getMessage(),
             ];
         }
+    }
+
+    /**
+     * Strip markdown code blocks from the response
+     */
+    private function stripMarkdownCodeBlocks(string $content): string
+    {
+        // Remove opening code blocks (```php, ```, etc.)
+        $content = preg_replace('/^```[a-zA-Z]*\n?/m', '', $content);
+        
+        // Remove closing code blocks
+        $content = preg_replace('/\n?```$/m', '', $content);
+        
+        // Clean up any remaining backticks at start/end
+        $content = trim($content, '`');
+        
+        // Clean up extra whitespace
+        $content = trim($content);
+        
+        return $content;
     }
 
     public function isConfigured(): bool
