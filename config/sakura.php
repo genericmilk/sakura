@@ -84,15 +84,18 @@ return [
     'analysis' => [
         'directories' => [
             'app/Http/Controllers',
+            'app/Models',
+            'app/Console/Commands',
             'app/Services',
             'app/Actions',
             'app/Enums',
-            'app/Console/Commands',
-            'app/Models',
             'app/Repositories',
             'app/Jobs',
             'app/Listeners',
             'app/Notifications',
+            'app/Providers',
+            'app/Http/Middleware',
+            'app/Http/Requests',
         ],
         'file_extensions' => ['php'],
         'exclude_patterns' => [

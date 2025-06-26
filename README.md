@@ -399,15 +399,18 @@ Tests are organized following Laravel conventions:
 'analysis' => [
     'directories' => [
         'app/Http/Controllers',
+        'app/Models',
+        'app/Console/Commands',
         'app/Services',
         'app/Actions',
         'app/Enums',
-        'app/Console/Commands',
-        'app/Models',
         'app/Repositories',
         'app/Jobs',
         'app/Listeners',
         'app/Notifications',
+        'app/Providers',
+        'app/Http/Middleware',
+        'app/Http/Requests',
     ],
     'file_extensions' => ['php'],
     'exclude_patterns' => [
@@ -417,6 +420,12 @@ Tests are organized following Laravel conventions:
     ],
 ],
 ```
+
+**Note**: Sakura will only analyze directories that exist in your project. If you see "No changes detected" on a fresh installation, you may need to:
+
+1. Adjust the `directories` array to match your project structure
+2. Create some PHP classes in the configured directories
+3. Run `php artisan sakura:generate-tests --force` to analyze all existing code
 
 ### Testing Configuration
 
@@ -571,9 +580,11 @@ class EmailServiceTest extends TestCase
 
 ### General Issues
 
-- **No Changes Detected**: Use `--force` to regenerate all tests
+- **No Changes Detected on Fresh Installation**: On first run, Sakura should automatically detect all existing code. If you see "No changes detected" on a fresh installation, it means no PHP classes were found in the configured directories. Check that the directories in `config/sakura.php` match your project structure.
+- **No Changes Detected (Subsequent Runs)**: Use `--force` to regenerate all tests
 - **Test Quality**: Adjust temperature settings for more/less creative tests
 - **Framework Detection**: Manually set `sakura_TEST_FRAMEWORK` if auto-detection fails
+- **Empty Project**: If your project has no classes yet, create some in `app/Models` or `app/Http/Controllers` first
 
 ## Requirements
 

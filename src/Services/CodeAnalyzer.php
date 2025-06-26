@@ -33,6 +33,7 @@ class CodeAnalyzer
             $fullPath = base_path($directory);
             
             if (!File::exists($fullPath)) {
+                // Skip non-existent directories silently to avoid noise
                 continue;
             }
 

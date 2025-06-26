@@ -52,6 +52,23 @@ class GenerateTestsCommand extends Command
         $this->info('📊 Analyzing codebase...');
         $changedItems = $this->codeAnalyzer->getChangedItems();
         
+        // Check if this is a fresh installation
+        $codeTreeFile = base_path(config('sakura.storage.directory')) . '/' . config('sakura.storage.code_tree_file');
+        $isFirstRun = !File::exists($codeTreeFile);
+        
+        if ($isFirstRun) {
+            $this->info('🆕 First run detected - analyzing all existing code...');
+            $currentTree = $this->codeAnalyzer->analyzeCodebase();
+            
+            // On first run, treat everything as new
+            $changedItems = [
+                'changed_classes' => [],
+                'changed_functions' => [],
+                'new_classes' => $currentTree['classes'],
+                'new_functions' => $currentTree['functions'],
+            ];
+        }
+        
         if ($this->option('force')) {
             $this->info('🔄 Force mode enabled - analyzing all code...');
             $currentTree = $this->codeAnalyzer->analyzeCodebase();
@@ -69,7 +86,23 @@ class GenerateTestsCommand extends Command
                      count($changedItems['new_functions']);
 
         if ($totalItems === 0) {
-            $this->info('✅ No changes detected. All tests are up to date!');
+            if ($isFirstRun) {
+                $this->warn('⚠️  No PHP classes or functions found to generate tests for.');
+                $this->line('');
+                $this->line('This could mean:');
+                $this->line('  • No configured directories exist in your project');
+                $this->line('  • Configured directories contain no PHP files');
+                $this->line('  • All PHP files are excluded by patterns');
+                $this->line('');
+                $this->line('💡 Try:');
+                $this->line('  • Run: php artisan vendor:publish --tag=sakura-config');
+                $this->line('  • Edit config/sakura.php to match your project structure');
+                $this->line('  • Create some classes in app/Models or app/Http/Controllers');
+                $this->line('  • Use --force flag to regenerate tests for existing code');
+            } else {
+                $this->info('✅ No changes detected. All tests are up to date!');
+                $this->line('💡 To regenerate all tests, use: php artisan sakura:generate-tests --force');
+            }
             return 0;
         }
 
