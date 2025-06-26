@@ -2,20 +2,17 @@
 
 namespace Genericmilk\Sakura\Services;
 
-use Anthropic\Anthropic;
-use Anthropic\Enums\TransporterFactory;
+use WpAi\Anthropic\AnthropicAPI;
 
 class ClaudeProvider implements AIProviderInterface
 {
     private array $config;
-    private Anthropic $client;
+    private AnthropicAPI $client;
 
     public function __construct()
     {
         $this->config = config('sakura.claude');
-        $this->client = new Anthropic([
-            'api_key' => $this->config['api_key'],
-        ]);
+        $this->client = new AnthropicAPI($this->config['api_key']);
     }
 
     public function generateTest(string $prompt): array
@@ -23,8 +20,7 @@ class ClaudeProvider implements AIProviderInterface
         try {
             $response = $this->client->messages()->create([
                 'model' => $this->config['model'],
-                'max_tokens' => $this->config['max_tokens'],
-                'temperature' => $this->config['temperature'],
+                'maxTokens' => $this->config['max_tokens'],
                 'messages' => [
                     [
                         'role' => 'user',
@@ -33,7 +29,7 @@ class ClaudeProvider implements AIProviderInterface
                 ]
             ]);
 
-            $content = $response->content[0]->text;
+            $content = $response['content'][0]['text'] ?? '';
 
             return [
                 'content' => $content,
@@ -98,7 +94,7 @@ Return only the test code, no explanations. Focus on creating high-quality, main
         try {
             $response = $this->client->messages()->create([
                 'model' => $this->config['model'],
-                'max_tokens' => 10,
+                'maxTokens' => 10,
                 'messages' => [
                     [
                         'role' => 'user',
@@ -107,7 +103,7 @@ Return only the test code, no explanations. Focus on creating high-quality, main
                 ]
             ]);
             
-            return !empty($response->content);
+            return !empty($response['content']);
         } catch (\Exception $e) {
             return false;
         }

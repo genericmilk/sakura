@@ -2,86 +2,35 @@
 
 namespace Genericmilk\Sakura\Services;
 
-use Google\AI\GenerativeLanguage\V1beta\GenerativeServiceClient;
-use Google\AI\GenerativeLanguage\V1beta\GenerateContentRequest;
-use Google\AI\GenerativeLanguage\V1beta\Content;
-use Google\AI\GenerativeLanguage\V1beta\Part;
-use Google\AI\GenerativeLanguage\V1beta\GenerationConfig;
-use Google\ApiCore\ApiException;
+use Gemini;
 
 class GeminiProvider implements AIProviderInterface
 {
     private array $config;
-    private GenerativeServiceClient $client;
+    private $client;
 
     public function __construct()
     {
         $this->config = config('sakura.gemini');
-        $this->client = new GenerativeServiceClient([
-            'credentials' => null,
-            'apiKey' => $this->config['api_key'],
-        ]);
+        $this->client = Gemini::client($this->config['api_key']);
     }
 
     public function generateTest(string $prompt): array
     {
         try {
-            $generationConfig = new GenerationConfig([
-                'temperature' => $this->config['temperature'],
-                'max_output_tokens' => $this->config['max_tokens'],
-            ]);
-
-            $content = new Content([
-                'parts' => [
-                    new Part([
-                        'text' => $this->buildPrompt($prompt)
-                    ])
-                ]
-            ]);
-
-            $request = new GenerateContentRequest([
-                'model' => 'models/' . $this->config['model'],
-                'contents' => [$content],
-                'generation_config' => $generationConfig,
-            ]);
-
-            $response = $this->client->generateContent($request);
-            $candidates = $response->getCandidates();
-
-            if (empty($candidates)) {
-                return [
-                    'content' => null,
-                    'error' => 'No response generated from Gemini API',
-                ];
-            }
-
-            $firstCandidate = $candidates[0];
-            $content = $firstCandidate->getContent();
-            $parts = $content->getParts();
-
-            if (empty($parts)) {
-                return [
-                    'content' => null,
-                    'error' => 'No content parts in Gemini response',
-                ];
-            }
-
-            $text = $parts[0]->getText();
+            $result = $this->client->generativeModel(model: $this->config['model'])->generateContent($this->buildPrompt($prompt));
+            
+            $content = $result->text();
 
             return [
-                'content' => $text,
+                'content' => $content,
                 'error' => null,
             ];
 
-        } catch (ApiException $e) {
-            return [
-                'content' => null,
-                'error' => 'Gemini API Error: ' . $e->getMessage(),
-            ];
         } catch (\Exception $e) {
             return [
                 'content' => null,
-                'error' => 'Gemini Error: ' . $e->getMessage(),
+                'error' => 'Gemini API Error: ' . $e->getMessage(),
             ];
         }
     }
@@ -114,7 +63,8 @@ Return only the test code, no explanations. Focus on creating high-quality, main
             'gemini-1.5-pro',
             'gemini-1.5-flash',
             'gemini-1.0-pro',
-            'gemini-1.0-pro-vision',
+            'gemini-2.0-flash',
+            'gemini-2.5-flash',
         ];
     }
 
@@ -133,21 +83,8 @@ Return only the test code, no explanations. Focus on creating high-quality, main
     public function testConnection(): bool
     {
         try {
-            $content = new Content([
-                'parts' => [
-                    new Part([
-                        'text' => 'Hello, this is a test message.'
-                    ])
-                ]
-            ]);
-
-            $request = new GenerateContentRequest([
-                'model' => 'models/' . $this->config['model'],
-                'contents' => [$content],
-            ]);
-
-            $response = $this->client->generateContent($request);
-            return !empty($response->getCandidates());
+            $result = $this->client->generativeModel(model: $this->config['model'])->generateContent('Hello, this is a test message.');
+            return !empty($result->text());
         } catch (\Exception $e) {
             return false;
         }
