@@ -1,7 +1,7 @@
 <div align="center">
   <img src="sakura.png" alt="Sakura Logo" width="200" height="200">
   
-  # Sakura v1.0.0
+  # Sakura v1.0.2
   
   [![Tests](https://github.com/genericmilk/sakura/workflows/Tests/badge.svg)](https://github.com/genericmilk/sakura/actions)
   [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://packagist.org/packages/genericmilk/sakura)

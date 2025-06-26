@@ -2,21 +2,23 @@
 
 namespace Genericmilk\Sakura\Services;
 
-use OpenAI\Laravel\Facades\OpenAI;
+use OpenAI;
 
 class OpenAIProvider implements AIProviderInterface
 {
     private array $config;
+    private $client;
 
     public function __construct()
     {
         $this->config = config('sakura.openai');
+        $this->client = OpenAI::client($this->config['api_key']);
     }
 
     public function generateTest(string $prompt): array
     {
         try {
-            $response = OpenAI::chat()->create([
+            $response = $this->client->chat()->create([
                 'model' => $this->config['model'],
                 'messages' => [
                     [
