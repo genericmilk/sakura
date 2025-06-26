@@ -25,13 +25,13 @@
 1. **Install the package via Composer:**
 
 ```bash
-composer require Genericmilk/robin
+composer require Genericmilk/sakura
 ```
 
 2. **Publish the configuration file:**
 
 ```bash
-php artisan vendor:publish --tag=robin-config
+php artisan vendor:publish --tag=sakura-config
 ```
 
 3. **Configure your AI provider:**
@@ -39,67 +39,67 @@ php artisan vendor:publish --tag=robin-config
 ### For OpenAI:
 
 ```env
-ROBIN_AI_PROVIDER=openai
+sakura_AI_PROVIDER=openai
 OPENAI_API_KEY=your-openai-api-key-here
 ```
 
 ### For Claude:
 
 ```env
-ROBIN_AI_PROVIDER=claude
+sakura_AI_PROVIDER=claude
 ANTHROPIC_API_KEY=your-anthropic-api-key-here
 ```
 
 ### For Gemini:
 
 ```env
-ROBIN_AI_PROVIDER=gemini
+sakura_AI_PROVIDER=gemini
 GOOGLE_AI_API_KEY=your-google-ai-api-key-here
 ```
 
 ### For Ollama:
 
 ```env
-ROBIN_AI_PROVIDER=ollama
-ROBIN_OLLAMA_BASE_URL=http://localhost:11434
-ROBIN_OLLAMA_MODEL=codellama
+sakura_AI_PROVIDER=ollama
+sakura_OLLAMA_BASE_URL=http://localhost:11434
+sakura_OLLAMA_MODEL=codellama
 ```
 
 4. **Optional: Configure additional settings in your `.env` file:**
 
 ```env
 # AI Provider (openai, claude, gemini, or ollama)
-ROBIN_AI_PROVIDER=openai
+sakura_AI_PROVIDER=openai
 
 # OpenAI Settings
-ROBIN_OPENAI_MODEL=gpt-4o-mini
-ROBIN_MAX_TOKENS=4000
-ROBIN_TEMPERATURE=0.3
+sakura_OPENAI_MODEL=gpt-4o-mini
+sakura_MAX_TOKENS=4000
+sakura_TEMPERATURE=0.3
 
 # Claude Settings
-ROBIN_CLAUDE_MODEL=claude-3-5-sonnet-20241022
-ROBIN_CLAUDE_MAX_TOKENS=4000
-ROBIN_CLAUDE_TEMPERATURE=0.3
+sakura_CLAUDE_MODEL=claude-3-5-sonnet-20241022
+sakura_CLAUDE_MAX_TOKENS=4000
+sakura_CLAUDE_TEMPERATURE=0.3
 
 # Gemini Settings
-ROBIN_GEMINI_MODEL=gemini-1.5-pro
-ROBIN_GEMINI_MAX_TOKENS=4000
-ROBIN_GEMINI_TEMPERATURE=0.3
-ROBIN_GEMINI_TIMEOUT=60
+sakura_GEMINI_MODEL=gemini-1.5-pro
+sakura_GEMINI_MAX_TOKENS=4000
+sakura_GEMINI_TEMPERATURE=0.3
+sakura_GEMINI_TIMEOUT=60
 
 # Ollama Settings
-ROBIN_OLLAMA_BASE_URL=http://localhost:11434
-ROBIN_OLLAMA_MODEL=codellama
-ROBIN_OLLAMA_MAX_TOKENS=4000
-ROBIN_OLLAMA_TEMPERATURE=0.3
-ROBIN_OLLAMA_TIMEOUT=120
+sakura_OLLAMA_BASE_URL=http://localhost:11434
+sakura_OLLAMA_MODEL=codellama
+sakura_OLLAMA_MAX_TOKENS=4000
+sakura_OLLAMA_TEMPERATURE=0.3
+sakura_OLLAMA_TIMEOUT=120
 
 # Testing Configuration
-ROBIN_TEST_FRAMEWORK=auto
-ROBIN_TEST_DIRECTORY=tests
-ROBIN_GENERATE_FEATURE_TESTS=true
-ROBIN_GENERATE_UNIT_TESTS=true
-ROBIN_MAX_TESTS_PER_CLASS=10
+sakura_TEST_FRAMEWORK=auto
+sakura_TEST_DIRECTORY=tests
+sakura_GENERATE_FEATURE_TESTS=true
+sakura_GENERATE_UNIT_TESTS=true
+sakura_MAX_TESTS_PER_CLASS=10
 ```
 
 ## Usage
@@ -109,7 +109,7 @@ ROBIN_MAX_TESTS_PER_CLASS=10
 Generate tests for all changed/new code:
 
 ```bash
-php artisan robin:generate-tests
+php artisan sakura:generate-tests
 ```
 
 ### Advanced Usage
@@ -117,31 +117,31 @@ php artisan robin:generate-tests
 **Force regeneration of all tests:**
 
 ```bash
-php artisan robin:generate-tests --force
+php artisan sakura:generate-tests --force
 ```
 
 **Generate tests for a specific class:**
 
 ```bash
-php artisan robin:generate-tests --class=UserController
+php artisan sakura:generate-tests --class=UserController
 ```
 
 **Generate tests for a specific function:**
 
 ```bash
-php artisan robin:generate-tests --function=calculateTotal
+php artisan sakura:generate-tests --function=calculateTotal
 ```
 
 **Dry run (see what would be generated without creating files):**
 
 ```bash
-php artisan robin:generate-tests --dry-run
+php artisan sakura:generate-tests --dry-run
 ```
 
 **Override AI provider for this run:**
 
 ```bash
-php artisan robin:generate-tests --provider=gemini
+php artisan sakura:generate-tests --provider=gemini
 ```
 
 ## AI Providers
@@ -181,18 +181,18 @@ php artisan robin:generate-tests --provider=gemini
    - Visit [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
    - Create an account and generate an API key
 
-2. **Configure Robin:**
+2. **Configure sakura:**
 
 ```env
-ROBIN_AI_PROVIDER=gemini
+sakura_AI_PROVIDER=gemini
 GOOGLE_AI_API_KEY=your-api-key-here
-ROBIN_GEMINI_MODEL=gemini-1.5-pro
+sakura_GEMINI_MODEL=gemini-1.5-pro
 ```
 
 3. **Test the configuration:**
 
 ```bash
-php artisan robin:generate-tests --provider=gemini --dry-run
+php artisan sakura:generate-tests --provider=gemini --dry-run
 ```
 
 #### Setting up Claude
@@ -202,18 +202,18 @@ php artisan robin:generate-tests --provider=gemini --dry-run
    - Visit [https://console.anthropic.com/](https://console.anthropic.com/)
    - Create an account and generate an API key
 
-2. **Configure Robin:**
+2. **Configure sakura:**
 
 ```env
-ROBIN_AI_PROVIDER=claude
+sakura_AI_PROVIDER=claude
 ANTHROPIC_API_KEY=your-api-key-here
-ROBIN_CLAUDE_MODEL=claude-3-5-sonnet-20241022
+sakura_CLAUDE_MODEL=claude-3-5-sonnet-20241022
 ```
 
 3. **Test the configuration:**
 
 ```bash
-php artisan robin:generate-tests --provider=claude --dry-run
+php artisan sakura:generate-tests --provider=claude --dry-run
 ```
 
 #### Setting up Ollama
@@ -244,18 +244,18 @@ ollama pull llama2:13b
 ollama pull mistral
 ```
 
-4. **Configure Robin:**
+4. **Configure sakura:**
 
 ```env
-ROBIN_AI_PROVIDER=ollama
-ROBIN_OLLAMA_MODEL=codellama
+sakura_AI_PROVIDER=ollama
+sakura_OLLAMA_MODEL=codellama
 ```
 
 ## How It Works
 
 ### 1. Code Analysis
 
-Robin analyzes your codebase and creates a tree of all PHP classes and functions in the configured directories:
+sakura analyzes your codebase and creates a tree of all PHP classes and functions in the configured directories:
 
 - Controllers
 - Services
@@ -270,7 +270,7 @@ Robin analyzes your codebase and creates a tree of all PHP classes and functions
 
 ### 2. Change Detection
 
-Robin tracks changes by:
+sakura tracks changes by:
 
 - Computing hashes of class content and individual methods
 - Comparing current code with previously saved state
@@ -279,7 +279,7 @@ Robin tracks changes by:
 
 ### 3. Test Generation
 
-For each changed/new item, Robin:
+For each changed/new item, sakura:
 
 - Determines the appropriate test type (Feature vs Unit)
 - Detects your testing framework (Pest or PHPUnit)
@@ -299,7 +299,7 @@ Tests are organized following Laravel conventions:
 ### AI Provider Settings
 
 ```php
-'provider' => env('ROBIN_AI_PROVIDER', 'openai'), // openai, claude, gemini, ollama
+'provider' => env('sakura_AI_PROVIDER', 'openai'), // openai, claude, gemini, ollama
 ```
 
 ### OpenAI Settings
@@ -307,9 +307,9 @@ Tests are organized following Laravel conventions:
 ```php
 'openai' => [
     'api_key' => env('OPENAI_API_KEY'),
-    'model' => env('ROBIN_OPENAI_MODEL', 'gpt-4o-mini'),
-    'max_tokens' => env('ROBIN_MAX_TOKENS', 4000),
-    'temperature' => env('ROBIN_TEMPERATURE', 0.3),
+    'model' => env('sakura_OPENAI_MODEL', 'gpt-4o-mini'),
+    'max_tokens' => env('sakura_MAX_TOKENS', 4000),
+    'temperature' => env('sakura_TEMPERATURE', 0.3),
 ],
 ```
 
@@ -318,9 +318,9 @@ Tests are organized following Laravel conventions:
 ```php
 'claude' => [
     'api_key' => env('ANTHROPIC_API_KEY'),
-    'model' => env('ROBIN_CLAUDE_MODEL', 'claude-3-5-sonnet-20241022'),
-    'max_tokens' => env('ROBIN_CLAUDE_MAX_TOKENS', 4000),
-    'temperature' => env('ROBIN_CLAUDE_TEMPERATURE', 0.3),
+    'model' => env('sakura_CLAUDE_MODEL', 'claude-3-5-sonnet-20241022'),
+    'max_tokens' => env('sakura_CLAUDE_MAX_TOKENS', 4000),
+    'temperature' => env('sakura_CLAUDE_TEMPERATURE', 0.3),
 ],
 ```
 
@@ -329,10 +329,10 @@ Tests are organized following Laravel conventions:
 ```php
 'gemini' => [
     'api_key' => env('GOOGLE_AI_API_KEY'),
-    'model' => env('ROBIN_GEMINI_MODEL', 'gemini-1.5-pro'),
-    'max_tokens' => env('ROBIN_GEMINI_MAX_TOKENS', 4000),
-    'temperature' => env('ROBIN_GEMINI_TEMPERATURE', 0.3),
-    'timeout' => env('ROBIN_GEMINI_TIMEOUT', 60),
+    'model' => env('sakura_GEMINI_MODEL', 'gemini-1.5-pro'),
+    'max_tokens' => env('sakura_GEMINI_MAX_TOKENS', 4000),
+    'temperature' => env('sakura_GEMINI_TEMPERATURE', 0.3),
+    'timeout' => env('sakura_GEMINI_TIMEOUT', 60),
 ],
 ```
 
@@ -340,11 +340,11 @@ Tests are organized following Laravel conventions:
 
 ```php
 'ollama' => [
-    'base_url' => env('ROBIN_OLLAMA_BASE_URL', 'http://localhost:11434'),
-    'model' => env('ROBIN_OLLAMA_MODEL', 'codellama'),
-    'max_tokens' => env('ROBIN_OLLAMA_MAX_TOKENS', 4000),
-    'temperature' => env('ROBIN_OLLAMA_TEMPERATURE', 0.3),
-    'timeout' => env('ROBIN_OLLAMA_TIMEOUT', 120),
+    'base_url' => env('sakura_OLLAMA_BASE_URL', 'http://localhost:11434'),
+    'model' => env('sakura_OLLAMA_MODEL', 'codellama'),
+    'max_tokens' => env('sakura_OLLAMA_MAX_TOKENS', 4000),
+    'temperature' => env('sakura_OLLAMA_TEMPERATURE', 0.3),
+    'timeout' => env('sakura_OLLAMA_TIMEOUT', 120),
 ],
 ```
 
@@ -377,36 +377,36 @@ Tests are organized following Laravel conventions:
 
 ```php
 'testing' => [
-    'framework' => env('ROBIN_TEST_FRAMEWORK', 'auto'), // auto, pest, phpunit
-    'test_directory' => env('ROBIN_TEST_DIRECTORY', 'tests'),
-    'generate_feature_tests' => env('ROBIN_GENERATE_FEATURE_TESTS', true),
-    'generate_unit_tests' => env('ROBIN_GENERATE_UNIT_TESTS', true),
-    'max_tests_per_class' => env('ROBIN_MAX_TESTS_PER_CLASS', 10),
+    'framework' => env('sakura_TEST_FRAMEWORK', 'auto'), // auto, pest, phpunit
+    'test_directory' => env('sakura_TEST_DIRECTORY', 'tests'),
+    'generate_feature_tests' => env('sakura_GENERATE_FEATURE_TESTS', true),
+    'generate_unit_tests' => env('sakura_GENERATE_UNIT_TESTS', true),
+    'max_tests_per_class' => env('sakura_MAX_TESTS_PER_CLASS', 10),
 ],
 ```
 
 ## File Structure
 
-After installation, Robin creates a `.robin` directory in your project root:
+After installation, sakura creates a `.sakura` directory in your project root:
 
 ```
 your-project/
-├── .robin/
+├── .sakura/
 │   ├── code-tree.json    # Tracks your code structure and hashes
 │   └── cache.json        # Cached data for performance
 ├── tests/
 │   ├── Feature/          # Generated feature tests
 │   └── Unit/             # Generated unit tests
 └── config/
-    └── robin.php         # Configuration file
+    └── sakura.php         # Configuration file
 ```
 
 ## Example Output
 
-When you run `php artisan robin:generate-tests`, you'll see output like:
+When you run `php artisan sakura:generate-tests`, you'll see output like:
 
 ```
-🤖 Robin - AI-Powered Test Generator
+🤖 sakura - AI-Powered Test Generator
 
 🤖 Using Gemini for test generation
 
@@ -516,19 +516,19 @@ class EmailServiceTest extends TestCase
 - **API Key Error**: Ensure `GOOGLE_AI_API_KEY` is set in your `.env` file
 - **Rate Limiting**: Check your Google AI usage limits
 - **Model Not Found**: Verify the model name in your configuration
-- **Timeout**: Increase `ROBIN_GEMINI_TIMEOUT` if needed
+- **Timeout**: Increase `sakura_GEMINI_TIMEOUT` if needed
 
 ### Ollama Issues
 
 - **Connection Error**: Ensure Ollama is running with `ollama serve`
 - **Model Not Found**: Pull the model with `ollama pull <model-name>`
-- **Timeout**: Increase `ROBIN_OLLAMA_TIMEOUT` for slower models
+- **Timeout**: Increase `sakura_OLLAMA_TIMEOUT` for slower models
 
 ### General Issues
 
 - **No Changes Detected**: Use `--force` to regenerate all tests
 - **Test Quality**: Adjust temperature settings for more/less creative tests
-- **Framework Detection**: Manually set `ROBIN_TEST_FRAMEWORK` if auto-detection fails
+- **Framework Detection**: Manually set `sakura_TEST_FRAMEWORK` if auto-detection fails
 
 ## Requirements
 

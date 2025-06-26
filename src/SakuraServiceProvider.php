@@ -1,23 +1,23 @@
 <?php
 
-namespace Genericmilk\Robin;
+namespace Genericmilk\Sakura;
 
 use Illuminate\Support\ServiceProvider;
-use Genericmilk\Robin\Console\Commands\GenerateTestsCommand;
-use Genericmilk\Robin\Services\CodeAnalyzer;
-use Genericmilk\Robin\Services\TestGenerator;
-use Genericmilk\Robin\Services\AIProviderFactory;
-use Genericmilk\Robin\Services\AIProviderInterface;
-use Genericmilk\Robin\Services\OpenAIProvider;
-use Genericmilk\Robin\Services\ClaudeProvider;
-use Genericmilk\Robin\Services\GeminiProvider;
-use Genericmilk\Robin\Services\OllamaProvider;
+use Genericmilk\Sakura\Console\Commands\GenerateTestsCommand;
+use Genericmilk\Sakura\Services\CodeAnalyzer;
+use Genericmilk\Sakura\Services\TestGenerator;
+use Genericmilk\Sakura\Services\AIProviderFactory;
+use Genericmilk\Sakura\Services\AIProviderInterface;
+use Genericmilk\Sakura\Services\OpenAIProvider;
+use Genericmilk\Sakura\Services\ClaudeProvider;
+use Genericmilk\Sakura\Services\GeminiProvider;
+use Genericmilk\Sakura\Services\OllamaProvider;
 
-class RobinServiceProvider extends ServiceProvider
+class sakuraServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/robin.php', 'robin');
+        $this->mergeConfigFrom(__DIR__.'/../config/sakura.php', 'sakura');
 
         $this->app->singleton(CodeAnalyzer::class);
         $this->app->singleton(TestGenerator::class);
@@ -42,23 +42,23 @@ class RobinServiceProvider extends ServiceProvider
             ]);
 
             $this->publishes([
-                __DIR__.'/../config/robin.php' => config_path('robin.php'),
-            ], 'robin-config');
+                __DIR__.'/../config/sakura.php' => config_path('sakura.php'),
+            ], 'sakura-config');
 
-            // Create .robin directory on install
-            $this->createRobinDirectory();
+            // Create .sakura directory on install
+            $this->createsakuraDirectory();
         }
     }
 
-    private function createRobinDirectory(): void
+    private function createsakuraDirectory(): void
     {
-        $robinPath = base_path('.robin');
+        $sakuraPath = base_path('.sakura');
         
-        if (!file_exists($robinPath)) {
-            mkdir($robinPath, 0755, true);
+        if (!file_exists($sakuraPath)) {
+            mkdir($sakuraPath, 0755, true);
             
             // Create initial code tree file
-            $codeTreePath = $robinPath . '/code-tree.json';
+            $codeTreePath = $sakuraPath . '/code-tree.json';
             if (!file_exists($codeTreePath)) {
                 file_put_contents($codeTreePath, json_encode([
                     'version' => '1.0.0',

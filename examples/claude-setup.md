@@ -1,6 +1,6 @@
-# Setting up Claude with Robin
+# Setting up Claude with sakura
 
-This guide will help you set up Anthropic's Claude to use with Robin for high-quality test generation.
+This guide will help you set up Anthropic's Claude to use with sakura for high-quality test generation.
 
 ## Prerequisites
 
@@ -20,25 +20,25 @@ This guide will help you set up Anthropic's Claude to use with Robin for high-qu
 
 1. Navigate to the API Keys section in your Anthropic console
 2. Click "Create Key"
-3. Give your key a descriptive name (e.g., "Robin Test Generation")
+3. Give your key a descriptive name (e.g., "sakura Test Generation")
 4. Copy the generated API key (you won't be able to see it again)
 
-### 3. Configure Robin for Claude
+### 3. Configure sakura for Claude
 
 Add the following to your `.env` file:
 
 ```env
-ROBIN_AI_PROVIDER=claude
+sakura_AI_PROVIDER=claude
 ANTHROPIC_API_KEY=your-api-key-here
-ROBIN_CLAUDE_MODEL=claude-3-5-sonnet-20241022
-ROBIN_CLAUDE_MAX_TOKENS=4000
-ROBIN_CLAUDE_TEMPERATURE=0.3
+sakura_CLAUDE_MODEL=claude-3-5-sonnet-20241022
+sakura_CLAUDE_MAX_TOKENS=4000
+sakura_CLAUDE_TEMPERATURE=0.3
 ```
 
 ### 4. Test the Configuration
 
 ```bash
-php artisan robin:generate-tests --provider=claude --dry-run
+php artisan sakura:generate-tests --provider=claude --dry-run
 ```
 
 ## Available Claude Models
@@ -83,7 +83,7 @@ php artisan robin:generate-tests --provider=claude --dry-run
 ### For Production Use
 
 ```env
-ROBIN_CLAUDE_MODEL=claude-3-5-sonnet-20241022
+sakura_CLAUDE_MODEL=claude-3-5-sonnet-20241022
 ```
 
 - Best overall quality
@@ -93,7 +93,7 @@ ROBIN_CLAUDE_MODEL=claude-3-5-sonnet-20241022
 ### For Development/Testing
 
 ```env
-ROBIN_CLAUDE_MODEL=claude-3-5-haiku-20241022
+sakura_CLAUDE_MODEL=claude-3-5-haiku-20241022
 ```
 
 - Fastest response times
@@ -103,7 +103,7 @@ ROBIN_CLAUDE_MODEL=claude-3-5-haiku-20241022
 ### For Complex Codebases
 
 ```env
-ROBIN_CLAUDE_MODEL=claude-3-opus-20240229
+sakura_CLAUDE_MODEL=claude-3-opus-20240229
 ```
 
 - Highest quality output
@@ -118,13 +118,13 @@ Controls creativity vs consistency:
 
 ```env
 # More creative, varied tests
-ROBIN_CLAUDE_TEMPERATURE=0.7
+sakura_CLAUDE_TEMPERATURE=0.7
 
 # More consistent, predictable tests
-ROBIN_CLAUDE_TEMPERATURE=0.1
+sakura_CLAUDE_TEMPERATURE=0.1
 
 # Balanced (recommended)
-ROBIN_CLAUDE_TEMPERATURE=0.3
+sakura_CLAUDE_TEMPERATURE=0.3
 ```
 
 ### Max Tokens
@@ -133,13 +133,13 @@ Controls response length:
 
 ```env
 # Shorter, focused tests
-ROBIN_CLAUDE_MAX_TOKENS=2000
+sakura_CLAUDE_MAX_TOKENS=2000
 
 # Comprehensive tests
-ROBIN_CLAUDE_MAX_TOKENS=6000
+sakura_CLAUDE_MAX_TOKENS=6000
 
 # Balanced (recommended)
-ROBIN_CLAUDE_MAX_TOKENS=4000
+sakura_CLAUDE_MAX_TOKENS=4000
 ```
 
 ## Usage Examples
@@ -148,28 +148,28 @@ ROBIN_CLAUDE_MAX_TOKENS=4000
 
 ```bash
 # Use Claude as default provider
-ROBIN_AI_PROVIDER=claude php artisan robin:generate-tests
+sakura_AI_PROVIDER=claude php artisan sakura:generate-tests
 
 # Override provider for this run
-php artisan robin:generate-tests --provider=claude
+php artisan sakura:generate-tests --provider=claude
 ```
 
 ### Specific Class Testing
 
 ```bash
-php artisan robin:generate-tests --class=UserController --provider=claude
+php artisan sakura:generate-tests --class=UserController --provider=claude
 ```
 
 ### Force Regeneration
 
 ```bash
-php artisan robin:generate-tests --force --provider=claude
+php artisan sakura:generate-tests --force --provider=claude
 ```
 
 ### Dry Run
 
 ```bash
-php artisan robin:generate-tests --dry-run --provider=claude
+php artisan sakura:generate-tests --dry-run --provider=claude
 ```
 
 ## Cost Optimization
@@ -184,9 +184,9 @@ php artisan robin:generate-tests --dry-run --provider=claude
 
 ```env
 # For cost-conscious usage
-ROBIN_CLAUDE_MODEL=claude-3-5-haiku-20241022
-ROBIN_CLAUDE_MAX_TOKENS=2000
-ROBIN_CLAUDE_TEMPERATURE=0.1
+sakura_CLAUDE_MODEL=claude-3-5-haiku-20241022
+sakura_CLAUDE_MAX_TOKENS=2000
+sakura_CLAUDE_TEMPERATURE=0.1
 ```
 
 ### Batch Processing
@@ -276,7 +276,7 @@ If you encounter issues with Claude integration:
 1. Check the [Anthropic API documentation](https://docs.anthropic.com/)
 2. Verify your API key and model configuration
 3. Check your usage limits in the Anthropic console
-4. Open an issue on the Robin GitHub repository
+4. Open an issue on the sakura GitHub repository
 
 ---
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Genericmilk\Robin\Tests\Unit;
+namespace Genericmilk\Sakura\Tests\Unit;
 
-use Genericmilk\Robin\Tests\TestCase;
-use Genericmilk\Robin\Services\CodeAnalyzer;
+use Genericmilk\Sakura\Tests\TestCase;
+use Genericmilk\Sakura\Services\CodeAnalyzer;
 use Illuminate\Support\Facades\File;
 
 class CodeAnalyzerTest extends TestCase

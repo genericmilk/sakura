@@ -1,20 +1,20 @@
 <?php
 
-namespace Genericmilk\Robin\Tests\Unit;
+namespace Genericmilk\Sakura\Tests\Unit;
 
-use Genericmilk\Robin\Tests\TestCase;
-use Genericmilk\Robin\Services\AIProviderFactory;
-use Genericmilk\Robin\Services\AIProviderInterface;
-use Genericmilk\Robin\Services\OpenAIProvider;
-use Genericmilk\Robin\Services\ClaudeProvider;
-use Genericmilk\Robin\Services\GeminiProvider;
-use Genericmilk\Robin\Services\OllamaProvider;
+use Genericmilk\Sakura\Tests\TestCase;
+use Genericmilk\Sakura\Services\AIProviderFactory;
+use Genericmilk\Sakura\Services\AIProviderInterface;
+use Genericmilk\Sakura\Services\OpenAIProvider;
+use Genericmilk\Sakura\Services\ClaudeProvider;
+use Genericmilk\Sakura\Services\GeminiProvider;
+use Genericmilk\Sakura\Services\OllamaProvider;
 
 class AIProviderFactoryTest extends TestCase
 {
     public function test_it_creates_openai_provider_by_default()
     {
-        config(['robin.provider' => 'openai']);
+        config(['sakura.provider' => 'openai']);
         
         $provider = AIProviderFactory::create();
         
@@ -24,7 +24,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_it_creates_claude_provider_when_configured()
     {
-        config(['robin.provider' => 'claude']);
+        config(['sakura.provider' => 'claude']);
         
         $provider = AIProviderFactory::create();
         
@@ -34,7 +34,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_it_creates_gemini_provider_when_configured()
     {
-        config(['robin.provider' => 'gemini']);
+        config(['sakura.provider' => 'gemini']);
         
         $provider = AIProviderFactory::create();
         
@@ -44,7 +44,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_it_creates_ollama_provider_when_configured()
     {
-        config(['robin.provider' => 'ollama']);
+        config(['sakura.provider' => 'ollama']);
         
         $provider = AIProviderFactory::create();
         
@@ -54,7 +54,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_it_throws_exception_for_invalid_provider()
     {
-        config(['robin.provider' => 'invalid']);
+        config(['sakura.provider' => 'invalid']);
         
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported AI provider: invalid');
@@ -64,7 +64,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_openai_provider_has_correct_name()
     {
-        config(['robin.provider' => 'openai']);
+        config(['sakura.provider' => 'openai']);
         
         $provider = AIProviderFactory::create();
         
@@ -73,7 +73,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_claude_provider_has_correct_name()
     {
-        config(['robin.provider' => 'claude']);
+        config(['sakura.provider' => 'claude']);
         
         $provider = AIProviderFactory::create();
         
@@ -82,7 +82,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_gemini_provider_has_correct_name()
     {
-        config(['robin.provider' => 'gemini']);
+        config(['sakura.provider' => 'gemini']);
         
         $provider = AIProviderFactory::create();
         
@@ -91,7 +91,7 @@ class AIProviderFactoryTest extends TestCase
 
     public function test_ollama_provider_has_correct_name()
     {
-        config(['robin.provider' => 'ollama']);
+        config(['sakura.provider' => 'ollama']);
         
         $provider = AIProviderFactory::create();
         

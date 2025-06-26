@@ -1,16 +1,16 @@
 <?php
 
-namespace Genericmilk\Robin\Tests;
+namespace Genericmilk\Sakura\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
-use Genericmilk\Robin\RobinServiceProvider;
+use Genericmilk\Sakura\SakuraServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
     protected function getPackageProviders($app)
     {
         return [
-            RobinServiceProvider::class,
+            SakuraServiceProvider::class,
         ];
     }
 
@@ -25,6 +25,6 @@ abstract class TestCase extends Orchestra
         ]);
 
         // Set OpenAI API key for testing
-        $app['config']->set('robin.openai.api_key', 'test-key');
+        $app['config']->set('sakura.openai.api_key', 'test-key');
     }
 } 

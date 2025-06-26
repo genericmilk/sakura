@@ -1,6 +1,6 @@
-# Setting up Ollama with Robin
+# Setting up Ollama with sakura
 
-This guide will help you set up Ollama to use with Robin for local test generation.
+This guide will help you set up Ollama to use with sakura for local test generation.
 
 ## Prerequisites
 
@@ -71,28 +71,28 @@ ollama pull deepseek-coder
 - **Quality**: Excellent for code generation
 - **Speed**: Moderate inference
 
-## Configuring Robin for Ollama
+## Configuring sakura for Ollama
 
 1. **Set the AI provider in your `.env` file:**
 
 ```env
-ROBIN_AI_PROVIDER=ollama
+sakura_AI_PROVIDER=ollama
 ```
 
 2. **Configure Ollama settings:**
 
 ```env
-ROBIN_OLLAMA_BASE_URL=http://localhost:11434
-ROBIN_OLLAMA_MODEL=codellama
-ROBIN_OLLAMA_MAX_TOKENS=4000
-ROBIN_OLLAMA_TEMPERATURE=0.3
-ROBIN_OLLAMA_TIMEOUT=120
+sakura_OLLAMA_BASE_URL=http://localhost:11434
+sakura_OLLAMA_MODEL=codellama
+sakura_OLLAMA_MAX_TOKENS=4000
+sakura_OLLAMA_TEMPERATURE=0.3
+sakura_OLLAMA_TIMEOUT=120
 ```
 
 3. **Test the configuration:**
 
 ```bash
-php artisan robin:generate-tests --provider=ollama --dry-run
+php artisan sakura:generate-tests --provider=ollama --dry-run
 ```
 
 ## Performance Tips
@@ -100,14 +100,14 @@ php artisan robin:generate-tests --provider=ollama --dry-run
 ### For Faster Generation
 
 - Use smaller models like `codellama` or `mistral`
-- Reduce `ROBIN_OLLAMA_MAX_TOKENS` to 2000-3000
+- Reduce `sakura_OLLAMA_MAX_TOKENS` to 2000-3000
 - Ensure you have sufficient RAM available
 
 ### For Better Quality
 
 - Use larger models like `llama2:13b` or `deepseek-coder`
-- Increase `ROBIN_OLLAMA_MAX_TOKENS` to 6000-8000
-- Set `ROBIN_OLLAMA_TEMPERATURE` to 0.1-0.2 for more focused output
+- Increase `sakura_OLLAMA_MAX_TOKENS` to 6000-8000
+- Set `sakura_OLLAMA_TEMPERATURE` to 0.1-0.2 for more focused output
 
 ### Memory Management
 
@@ -147,7 +147,7 @@ ollama pull codellama
 
 ### Connection Timeout
 
-- Increase `ROBIN_OLLAMA_TIMEOUT` in your `.env`
+- Increase `sakura_OLLAMA_TIMEOUT` in your `.env`
 - Check if Ollama is running: `curl http://localhost:11434/api/tags`
 - Restart Ollama if needed
 
@@ -155,13 +155,13 @@ ollama pull codellama
 
 ```bash
 # Generate tests using Ollama
-php artisan robin:generate-tests --provider=ollama
+php artisan sakura:generate-tests --provider=ollama
 
 # Generate tests for a specific class
-php artisan robin:generate-tests --class=UserController --provider=ollama
+php artisan sakura:generate-tests --class=UserController --provider=ollama
 
 # Force regenerate all tests
-php artisan robin:generate-tests --force --provider=ollama
+php artisan sakura:generate-tests --force --provider=ollama
 ```
 
 ## Model Comparison
@@ -175,7 +175,7 @@ php artisan robin:generate-tests --force --provider=ollama
 
 ## Security and Privacy
 
-Using Ollama with Robin provides several privacy benefits:
+Using Ollama with sakura provides several privacy benefits:
 
 - **Local Processing**: All code analysis and test generation happens locally
 - **No Data Transmission**: Your code never leaves your machine

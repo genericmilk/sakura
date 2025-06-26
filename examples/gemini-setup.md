@@ -1,13 +1,13 @@
-# Gemini Setup Guide for Robin
+# Gemini Setup Guide for sakura
 
-This guide will help you set up Google's Gemini AI provider for Robin, enabling you to generate tests using Google's powerful AI models.
+This guide will help you set up Google's Gemini AI provider for sakura, enabling you to generate tests using Google's powerful AI models.
 
 ## Prerequisites
 
 - A Google account
 - Access to Google AI Studio (MakerSuite)
 - PHP 8.1+ with Composer
-- Laravel project with Robin installed
+- Laravel project with sakura installed
 
 ## Step 1: Get a Google AI API Key
 
@@ -26,34 +26,34 @@ This guide will help you set up Google's Gemini AI provider for Robin, enabling 
    - Go to [Google Cloud Console](https://console.cloud.google.com/)
    - Enable the "Generative Language API" for your project
 
-## Step 2: Configure Robin for Gemini
+## Step 2: Configure sakura for Gemini
 
 1. **Update your `.env` file:**
 
 ```env
-ROBIN_AI_PROVIDER=gemini
+sakura_AI_PROVIDER=gemini
 GOOGLE_AI_API_KEY=AIzaSyYourApiKeyHere
-ROBIN_GEMINI_MODEL=gemini-1.5-pro
-ROBIN_GEMINI_MAX_TOKENS=4000
-ROBIN_GEMINI_TEMPERATURE=0.3
-ROBIN_GEMINI_TIMEOUT=60
+sakura_GEMINI_MODEL=gemini-1.5-pro
+sakura_GEMINI_MAX_TOKENS=4000
+sakura_GEMINI_TEMPERATURE=0.3
+sakura_GEMINI_TIMEOUT=60
 ```
 
 2. **Publish the configuration (if not already done):**
 
 ```bash
-php artisan vendor:publish --tag=robin-config
+php artisan vendor:publish --tag=sakura-config
 ```
 
-3. **Update `config/robin.php` if needed:**
+3. **Update `config/sakura.php` if needed:**
 
 ```php
 'gemini' => [
     'api_key' => env('GOOGLE_AI_API_KEY'),
-    'model' => env('ROBIN_GEMINI_MODEL', 'gemini-1.5-pro'),
-    'max_tokens' => env('ROBIN_GEMINI_MAX_TOKENS', 4000),
-    'temperature' => env('ROBIN_GEMINI_TEMPERATURE', 0.3),
-    'timeout' => env('ROBIN_GEMINI_TIMEOUT', 60),
+    'model' => env('sakura_GEMINI_MODEL', 'gemini-1.5-pro'),
+    'max_tokens' => env('sakura_GEMINI_MAX_TOKENS', 4000),
+    'temperature' => env('sakura_GEMINI_TEMPERATURE', 0.3),
+    'timeout' => env('sakura_GEMINI_TIMEOUT', 60),
 ],
 ```
 
@@ -62,18 +62,18 @@ php artisan vendor:publish --tag=robin-config
 1. **Run a dry-run test:**
 
 ```bash
-php artisan robin:generate-tests --provider=gemini --dry-run
+php artisan sakura:generate-tests --provider=gemini --dry-run
 ```
 
 2. **Check for any configuration errors:**
 
 ```bash
-php artisan robin:generate-tests --provider=gemini --class=ExampleController
+php artisan sakura:generate-tests --provider=gemini --class=ExampleController
 ```
 
 ## Available Gemini Models
 
-Robin supports the following Gemini models:
+sakura supports the following Gemini models:
 
 | Model                   | Description                               | Best For                             |
 | ----------------------- | ----------------------------------------- | ------------------------------------ |
@@ -94,39 +94,39 @@ Robin supports the following Gemini models:
 
 ```bash
 # Generate tests for all changed code
-php artisan robin:generate-tests --provider=gemini
+php artisan sakura:generate-tests --provider=gemini
 
 # Generate tests for a specific class
-php artisan robin:generate-tests --provider=gemini --class=UserController
+php artisan sakura:generate-tests --provider=gemini --class=UserController
 
 # Generate tests for a specific function
-php artisan robin:generate-tests --provider=gemini --function=calculateTotal
+php artisan sakura:generate-tests --provider=gemini --function=calculateTotal
 ```
 
 ### Advanced Usage
 
 ```bash
 # Force regeneration of all tests
-php artisan robin:generate-tests --provider=gemini --force
+php artisan sakura:generate-tests --provider=gemini --force
 
 # Dry run to see what would be generated
-php artisan robin:generate-tests --provider=gemini --dry-run
+php artisan sakura:generate-tests --provider=gemini --dry-run
 
 # Override model for this run
-ROBIN_GEMINI_MODEL=gemini-1.5-flash php artisan robin:generate-tests --provider=gemini
+sakura_GEMINI_MODEL=gemini-1.5-flash php artisan sakura:generate-tests --provider=gemini
 ```
 
 ## Configuration Options
 
 ### Environment Variables
 
-| Variable                   | Default          | Description                |
-| -------------------------- | ---------------- | -------------------------- |
-| `GOOGLE_AI_API_KEY`        | -                | Your Google AI API key     |
-| `ROBIN_GEMINI_MODEL`       | `gemini-1.5-pro` | Gemini model to use        |
-| `ROBIN_GEMINI_MAX_TOKENS`  | `4000`           | Maximum tokens in response |
-| `ROBIN_GEMINI_TEMPERATURE` | `0.3`            | Creativity level (0.0-1.0) |
-| `ROBIN_GEMINI_TIMEOUT`     | `60`             | Request timeout in seconds |
+| Variable                    | Default          | Description                |
+| --------------------------- | ---------------- | -------------------------- |
+| `GOOGLE_AI_API_KEY`         | -                | Your Google AI API key     |
+| `sakura_GEMINI_MODEL`       | `gemini-1.5-pro` | Gemini model to use        |
+| `sakura_GEMINI_MAX_TOKENS`  | `4000`           | Maximum tokens in response |
+| `sakura_GEMINI_TEMPERATURE` | `0.3`            | Creativity level (0.0-1.0) |
+| `sakura_GEMINI_TIMEOUT`     | `60`             | Request timeout in seconds |
 
 ### Temperature Settings
 
@@ -184,7 +184,7 @@ Available models: gemini-1.5-pro, gemini-1.5-flash, gemini-1.0-pro, gemini-1.0-p
 
 **Solution:**
 
-- Increase `ROBIN_GEMINI_TIMEOUT` in your `.env`
+- Increase `sakura_GEMINI_TIMEOUT` in your `.env`
 - Try a faster model like `gemini-1.5-flash`
 - Check your internet connection
 
@@ -206,10 +206,10 @@ Enable debug mode to see detailed error information:
 
 ```bash
 # Set debug mode
-ROBIN_DEBUG=true php artisan robin:generate-tests --provider=gemini
+sakura_DEBUG=true php artisan sakura:generate-tests --provider=gemini
 
 # Or add to your .env
-ROBIN_DEBUG=true
+sakura_DEBUG=true
 ```
 
 ## Performance Tips
@@ -221,7 +221,7 @@ ROBIN_DEBUG=true
 
 ### 2. Token Management
 
-- Adjust `ROBIN_GEMINI_MAX_TOKENS` based on your needs
+- Adjust `sakura_GEMINI_MAX_TOKENS` based on your needs
 - Lower values = faster responses, higher values = more detailed tests
 
 ### 3. Temperature Optimization
@@ -250,8 +250,8 @@ ROBIN_DEBUG=true
 
 ### 3. Caching
 
-- Robin caches results to avoid regenerating unchanged code
-- Use the `.robin` directory to track changes efficiently
+- sakura caches results to avoid regenerating unchanged code
+- Use the `.sakura` directory to track changes efficiently
 
 ## Integration Examples
 
@@ -276,8 +276,8 @@ jobs:
       - name: Generate tests with Gemini
         env:
           GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
-          ROBIN_AI_PROVIDER: gemini
-        run: php artisan robin:generate-tests --provider=gemini
+          sakura_AI_PROVIDER: gemini
+        run: php artisan sakura:generate-tests --provider=gemini
 ```
 
 ### With Docker
@@ -296,8 +296,8 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set environment variables
-ENV ROBIN_AI_PROVIDER=gemini
-ENV ROBIN_GEMINI_MODEL=gemini-1.5-pro
+ENV sakura_AI_PROVIDER=gemini
+ENV sakura_GEMINI_MODEL=gemini-1.5-pro
 
 # Copy application
 COPY . /var/www/html
@@ -307,7 +307,7 @@ WORKDIR /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
 # Generate tests
-CMD ["php", "artisan", "robin:generate-tests", "--provider=gemini"]
+CMD ["php", "artisan", "sakura:generate-tests", "--provider=gemini"]
 ```
 
 ## Best Practices
@@ -326,7 +326,7 @@ CMD ["php", "artisan", "robin:generate-tests", "--provider=gemini"]
 
 ### 3. Maintenance
 
-- Keep Robin updated for latest features
+- Keep sakura updated for latest features
 - Monitor API usage and costs
 - Regularly review and update test generation prompts
 
@@ -342,7 +342,7 @@ If you encounter issues with Gemini integration:
 
 1. **Check the troubleshooting section above**
 2. **Review Google AI documentation**: [https://ai.google.dev/](https://ai.google.dev/)
-3. **Check Robin GitHub issues**: [https://github.com/genericmilk/robin/issues](https://github.com/genericmilk/robin/issues)
+3. **Check sakura GitHub issues**: [https://github.com/genericmilk/sakura/issues](https://github.com/genericmilk/sakura/issues)
 4. **Contact Google AI support**: [https://ai.google.dev/support](https://ai.google.dev/support)
 
 ---

@@ -1,9 +1,9 @@
 <?php
 
-namespace Genericmilk\Robin\Tests\Unit;
+namespace Genericmilk\Sakura\Tests\Unit;
 
-use Genericmilk\Robin\Tests\TestCase;
-use Genericmilk\Robin\Services\GeminiProvider;
+use Genericmilk\Sakura\Tests\TestCase;
+use Genericmilk\Sakura\Services\GeminiProvider;
 
 class GeminiProviderTest extends TestCase
 {
@@ -32,28 +32,28 @@ class GeminiProviderTest extends TestCase
 
     public function test_it_validates_model_availability()
     {
-        config(['robin.gemini.model' => 'gemini-1.5-pro']);
+        config(['sakura.gemini.model' => 'gemini-1.5-pro']);
         
         $this->assertTrue($this->geminiProvider->isModelAvailable());
     }
 
     public function test_it_rejects_invalid_model()
     {
-        config(['robin.gemini.model' => 'invalid-model']);
+        config(['sakura.gemini.model' => 'invalid-model']);
         
         $this->assertFalse($this->geminiProvider->isModelAvailable());
     }
 
     public function test_it_requires_api_key_for_configuration()
     {
-        config(['robin.gemini.api_key' => '']);
+        config(['sakura.gemini.api_key' => '']);
         
         $this->assertFalse($this->geminiProvider->isConfigured());
     }
 
     public function test_it_is_configured_with_api_key()
     {
-        config(['robin.gemini.api_key' => 'test-key']);
+        config(['sakura.gemini.api_key' => 'test-key']);
         
         $this->assertTrue($this->geminiProvider->isConfigured());
     }
