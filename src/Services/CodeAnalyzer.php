@@ -28,6 +28,9 @@ class CodeAnalyzer
 
         $classes = [];
         $functions = [];
+        $totalFilesProcessed = 0;
+        $skippedFiles = [];
+        $processedFiles = [];
 
         foreach ($directories as $directory) {
             $fullPath = base_path($directory);
@@ -41,6 +44,7 @@ class CodeAnalyzer
             
             foreach ($files as $file) {
                 if (!in_array($file->getExtension(), $fileExtensions)) {
+                    $skippedFiles[] = $file->getRelativePathname() . ' (extension: ' . $file->getExtension() . ')';
                     continue;
                 }
 
@@ -50,6 +54,7 @@ class CodeAnalyzer
                 foreach ($excludePatterns as $pattern) {
                     if (Str::is($pattern, $fileName)) {
                         $shouldExclude = true;
+                        $skippedFiles[] = $file->getRelativePathname() . ' (excluded by pattern: ' . $pattern . ')';
                         break;
                     }
                 }
@@ -59,8 +64,25 @@ class CodeAnalyzer
                 }
 
                 $content = File::get($file->getPathname());
+                $processedFiles[] = $file->getRelativePathname();
+                $totalFilesProcessed++;
                 $this->extractClassesAndFunctions($content, $file->getRelativePathname(), $classes, $functions);
             }
+        }
+
+        // Debug output (only when running via console)
+        if (app()->runningInConsole()) {
+            $debugInfo = [
+                'totalFilesProcessed' => $totalFilesProcessed,
+                'classesFound' => count($classes),
+                'functionsFound' => count($functions),
+                'processedFiles' => $processedFiles,
+                'skippedFiles' => array_slice($skippedFiles, 0, 10),
+                'directories' => $directories,
+            ];
+            
+            // Write debug info to a temporary file
+            File::put(storage_path('sakura_debug.json'), json_encode($debugInfo, JSON_PRETTY_PRINT));
         }
 
         return [
